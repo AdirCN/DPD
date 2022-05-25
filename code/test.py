@@ -13,14 +13,14 @@ PI = 3.14159265359
 
 def main():
 	AMP = [5,5,5,5]
-	FREQ = [3,-3,5,-5]
+	FREQ = [3,-3,5,-4]
 	PHASE =  [0,0,0,0]
 	ONES = [1,1,1,1]
 	signal1 = signal_generator(AMP,FREQ,PHASE,5, 1000)
 	signal1.generate()
 	
-	m = 10
-	k = 3
+	m = 1
+	k = 10
 	input = scipy.io.loadmat('../pa_data/input.mat')
 	output = scipy.io.loadmat('../pa_data/output.mat')
 	input = input['input']
@@ -28,7 +28,8 @@ def main():
 	pa1 = power_amplifier_mp([], m,k)
 	X = pa1.calculateX(input[0])
 	ThetaLS = (np.matmul(inv(np.matmul((np.transpose(X)).conjugate(),X)),(np.transpose(X)).conjugate())).dot(np.transpose(output))
-	
+	Y_hat = X.dot(ThetaLS)
+	print("error: " + str(output - Y_hat))
 	signal1.plot_time_variation()
 	pa = power_amplifier_mp(ThetaLS,m,k)
 	
