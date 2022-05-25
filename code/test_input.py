@@ -12,47 +12,52 @@ from numpy.linalg import inv
 PI = 3.14159265359
 
 def main():
-	AMP = [5,5,5,5]
-	FREQ = [3,-3,5,-5]
-	PHASE =  [0,0,0,0]
-	ONES = [1,1,1,1]
-	signal1 = signal_generator(AMP,FREQ,PHASE,5, 1000)
-	signal1.generate()
-	
-	m = 2
-	k = 9
 	input = scipy.io.loadmat('../pa_data/input.mat')
 	output = scipy.io.loadmat('../pa_data/output.mat')
 	input = input['input']
 	output = output['output']
+	signal = input[0]
+	t = np.linspace(0,20,10500)
+	errMap = np.zeros((10,10))
+	m=2
+	k=9
 	pa1 = power_amplifier_mp([], m,k)
 	X = pa1.calculateX(input[0])
 	ThetaLS = (np.matmul(inv(np.matmul((np.transpose(X)).conjugate(),X)),(np.transpose(X)).conjugate())).dot(np.transpose(output))
-	signal1.plot_time_variation()
-	pa = power_amplifier_mp(ThetaLS,m,k)
-	amp_signal = pa.amplify(signal1.signal)
+	Y_hat = X.dot(ThetaLS)
+	pa2 = power_amplifier_mp(ThetaLS,m,k)
+	amp_signal = pa2.amplify(signal)
+	err = (np.linalg.norm(abs(np.transpose(output)) - abs(amp_signal)))/np.linalg.norm(abs(output))
 	
-	plt.plot(signal1.t,abs(amp_signal))
+	plt.plot(t,np.transpose(abs(input)))
+	plt.title('input signal')
+	plt.xlabel('t [sec]')
+	plt.ylabel('Amplitude')
+	plt.draw() 
+	plt.show()
+	
+	plt.plot(t,abs(np.transpose(output)))
 	plt.title('Amplified')
 	plt.xlabel('t [sec]')
 	plt.ylabel('Amplitude')
 	plt.draw() 
 	plt.show()
 	
-	plt.plot(abs(signal1.signal),abs(amp_signal),'.', markersize=1)
+	plt.plot(abs(signal),abs(amp_signal),'.', markersize=1)
 	plt.title('AM_AM')
 	plt.xlabel('Amplitude')
 	plt.ylabel('Amplitude')
 	plt.draw() 
 	plt.show()
 	e = 0.0000000000000000000000001
-	a = np.arctan(np.divide(signal1.signal.imag,signal1.signal.real + e))
+	a = np.arctan(np.divide(signal.imag,signal.real + e))
 	b = np.arctan(np.divide(amp_signal.imag,amp_signal.real+e))
-	plt.plot(abs(signal1.signal), np.transpose(a - np.transpose(b)),'.', markersize=1)
+	plt.plot(abs(signal), np.transpose(a - np.transpose(b)),'.', markersize=1)
 	plt.title('AM_PM')
 	plt.xlabel('Amplitude')
 	plt.ylabel('Amplitude')
 	plt.draw() 
 	plt.show()
+
 	
 main()
