@@ -17,10 +17,12 @@ class power_amplifier_mp:
 		return X.dot(self.parameters)
 	
 	def calculateX(self,signal):
-		X = np.zeros((len(signal),self.M * self.K))
+		X = np.zeros((len(signal),self.M * self.K),dtype=complex)
 		for i in range(self.M,len(signal)):
 			for j in range((self.K)*(self.M)):
-					X[i][j] = signal[i-j%self.M] * abs(signal[i-j%self.M])**(math.floor(j/(self.M)))
+					a = complex(signal[i-j%self.M].real,signal[i-j%self.M].imag)
+					b = complex(abs(signal[i-j%self.M])**(math.floor(j/(self.M))),0)
+					X[i][j] =  a*b
 		return X
 
 

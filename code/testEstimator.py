@@ -16,7 +16,9 @@ def main():
 	FREQ = [3,-3,5,-5]
 	PHASE =  [0,0,0,0]
 	ONES = [1,1,1,1]
-	signal1 = signal_generator(AMP,FREQ,PHASE,50, 1000)
+	Fs = 10000
+	time = 100
+	signal1 = signal_generator(AMP,FREQ,PHASE,time, Fs)
 	signal1.generate()
 	
 	m = 2

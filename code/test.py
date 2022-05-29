@@ -12,10 +12,10 @@ from numpy.linalg import inv
 PI = 3.14159265359
 
 def main():
-	AMP = [1,1,2,2,3,3,4,4,5,5]
-	FREQ = [1,-1,2,-2,3,-3,4,-4,5,-5]
-	PHASE =  [0,0,1,-1,2,-2,3,-3,4,-4]
-	ONES = [1,1,1,1,1,1,1,1,1,1]
+	AMP = [1,5,7,3,3,4,6]
+	FREQ = [3,7,6,3,2,-4,-9]
+	PHASE =  [1,4,3,6,5,4,6]
+	ONES = [1,1,1,1,1,1,1]
 	signal1 = signal_generator(AMP,FREQ,PHASE,5, 1000)
 	signal1.generate()
 	
