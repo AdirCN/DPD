@@ -12,7 +12,7 @@ from numpy.linalg import inv
 PI = 3.14159265359
 
 def main():
-	AMP = [1,5,7,3,3,4,6]
+	AMP = [1,5,7,3,3,4,1]
 	FREQ = [3,7,6,3,2,-4,-9]
 	PHASE =  [1,4,3,6,5,4,6]
 	ONES = [1,1,1,1,1,1,1]
@@ -46,12 +46,12 @@ def main():
 	plt.draw() 
 	plt.show()
 	e = 0.0000000000000000000000001
-	a = np.arctan(np.divide(signal1.signal.imag,signal1.signal.real + e))
+	a = np.arctan(np.divide(signal1.signal.imag,signal1.signal.real+e))
 	b = np.arctan(np.divide(amp_signal.imag,amp_signal.real+e))
 	plt.plot(abs(signal1.signal), np.transpose(a - np.transpose(b)),'.', markersize=1)
 	plt.title('AM_PM')
 	plt.xlabel('Amplitude')
-	plt.ylabel('Amplitude')
+	plt.ylabel('Phase difference')
 	plt.draw() 
 	plt.show()
 	
