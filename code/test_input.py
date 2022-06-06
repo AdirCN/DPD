@@ -55,7 +55,7 @@ def main():
 	plt.plot(abs(signal), np.transpose(a - np.transpose(b)),'.', markersize=1)
 	plt.title('AM_PM')
 	plt.xlabel('Amplitude')
-	plt.ylabel('Amplitude')
+	plt.ylabel('phase difference')
 	plt.draw() 
 	plt.show()
 
