@@ -28,6 +28,14 @@ def main():
 	pa1 = power_amplifier_mp([], m,k)
 	X = pa1.calculateX(input[0])
 	ThetaLS = (np.matmul(inv(np.matmul((np.transpose(X)).conjugate(),X)),(np.transpose(X)).conjugate())).dot(np.transpose(output))
+
+	ThetaGD = ThetaLS*0
+	mu = 0.005*inv(np.matmul(np.transpose(X).conjugate(),X) + 0.00000000000001)
+	for i in range(1,1000):
+		ThetaGD = ThetaGD - 2*np.matmul(mu,np.matmul(np.transpose(X).conjugate(),np.matmul(X,ThetaGD) - np.transpose(output)))
+	print(np.linalg.norm(ThetaLS-ThetaGD)/np.linalg.norm(ThetaLS))
+	'''
+	#LS
 	signal1.plot_time_variation()
 	pa = power_amplifier_mp(ThetaLS,m,k)
 	amp_signal = pa.amplify(signal1.signal)
@@ -54,5 +62,5 @@ def main():
 	plt.ylabel('Phase difference')
 	plt.draw() 
 	plt.show()
-	
+	'''
 main()
