@@ -32,9 +32,19 @@ def main():
 	ThetaGD = ThetaLS*0
 	mu = 0.005*inv(np.matmul(np.transpose(X).conjugate(),X) + 0.00000000000001)
 	print(mu.shape)
+	err = []
 	for i in range(1,1000):
+		err.append(np.linalg.norm(np.matmul(X,ThetaGD) - np.transpose(output))/np.linalg.norm(np.transpose(output)))
 		ThetaGD = ThetaGD - 2*np.matmul(mu,np.matmul(np.transpose(X).conjugate(),np.matmul(X,ThetaGD) - np.transpose(output)))
 	print(np.linalg.norm(ThetaLS-ThetaGD)/np.linalg.norm(ThetaLS))
+	
+	plt.plot(range(1,1000),err)
+	plt.title('Normalized error between SGD modeled PA output and real Labs output')
+	plt.xlabel('Iteration number')
+	plt.ylabel('Normalized error')
+	plt.draw() 
+	plt.show()
+	
 	'''
 	#LS
 	signal1.plot_time_variation()

@@ -17,8 +17,6 @@ def main():
 	input = input['input']
 	output = output['output']
 	signal = input[0]
-	print(len(signal))
-	print(len(output[0]))
 	t = np.linspace(0,20,10500)
 	errMap = np.zeros((10,10))
 	m=2
@@ -38,7 +36,7 @@ def main():
 	plt.draw() 
 	plt.show()
 	
-	plt.plot(t,abs(np.transpose(output)))
+	plt.plot(t,abs(output.flatten()))
 	plt.title('Amplified')
 	plt.xlabel('t [sec]')
 	plt.ylabel('Amplitude')
@@ -58,6 +56,24 @@ def main():
 	plt.title('AM_PM')
 	plt.xlabel('Amplitude')
 	plt.ylabel('phase difference')
+	plt.draw() 
+	plt.show()
+	
+	rate = 3*(10**6)
+	f = np.linspace(-rate/2,rate/2,len(amp_signal))
+	amp_spectrum = fftshift(fft(amp_signal.flatten()))
+	plt.plot(f,10*np.log(np.abs(amp_spectrum)))
+	plt.title('Modeled PA output Spectrum')
+	plt.xlabel('f [Hz]')
+	plt.ylabel('Amplitude [dB]')
+	plt.draw() 
+	plt.show()
+		
+	amp_spectrum = fftshift(fft(signal))
+	plt.plot(f,10*np.log(np.abs(amp_spectrum)))
+	plt.title('PA input Spectrum')
+	plt.xlabel('f [Hz]')
+	plt.ylabel('Amplitude [dB]')
 	plt.draw() 
 	plt.show()
 
