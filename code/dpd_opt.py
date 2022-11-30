@@ -1,3 +1,4 @@
+
 from pa import power_amplifier_mp
 from pa import power_amplifier_gmp
 from sg import signal_generator
@@ -19,15 +20,29 @@ def main():
 	signal = input[0]
 	t = np.linspace(0,20,10500)
 	errMap = np.zeros((10,10))
-	m=2
-	k=9
-	pa1 = power_amplifier_mp([], m,k)
-	X = pa1.calculateX(input[0])
-	ThetaLS = (np.matmul(inv(np.matmul((np.transpose(X)).conjugate(),X)),(np.transpose(X)).conjugate())).dot(np.transpose(output))
-	pa2 = power_amplifier_mp(ThetaLS,m,k)
-	amp_signal = pa2.amplify(signal)
-	err = (np.linalg.norm(abs(np.transpose(output)) - abs(amp_signal)))/np.linalg.norm(abs(output))
-	
+	min_err = 100
+	min_m = 0
+	min_k = 0
+	for m in range(0,10):
+		for k in range(0,10):
+			G = 0.01708039
+			pa1 = power_amplifier_mp([], m,k)
+			scale_factor = max(signal)/(G*max(output.flatten()))
+			scaled_output = output.flatten()*scale_factor
+			Y = pa1.calculateX(scaled_output)
+			ThetaLS = (np.matmul(inv(np.matmul((np.transpose(Y)).conjugate(),Y)),(np.transpose(Y)).conjugate())).dot(np.transpose(signal))
+			x_hat = Y.dot(ThetaLS)
+			pa2 = power_amplifier_mp(ThetaLS,m,k)
+			amp_signal = pa2.amplify(scaled_output)
+			err = (np.linalg.norm(abs(np.transpose(signal)) - abs(amp_signal)))/np.linalg.norm(abs(signal))
+			if(err < min_err):
+				min_m = m
+				min_k = k
+				min_err = err
+			print("m: " + str(m) + ", k: " + str(k)+ ", err: " + str(20*math.log(err)))
+	print("minimum_total:")
+	print("m: " + str(min_m) + ", k: " + str(min_k)+ ", err: " + str(20*math.log(min_err)))
+	'''
 	plt.plot(t,np.transpose(abs(input)))
 	plt.title('input signal')
 	plt.xlabel('t [sec]')
@@ -75,6 +90,6 @@ def main():
 	plt.ylabel('Amplitude [dB]')
 	plt.draw() 
 	plt.show()
-
+	'''
 	
 main()
