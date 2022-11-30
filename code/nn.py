@@ -66,8 +66,7 @@ while(rho <= 100):
 			min_index = rho
 			yhat_min = YHat
 	rho = rho+1
-	#print(YHat)
-	#print(output)
+
 print(min_index)
 print(min)
 print(yhat_min)

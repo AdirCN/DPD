@@ -20,7 +20,6 @@ def main():
 	time = 100
 	signal1 = signal_generator(AMP,FREQ,PHASE,time, Fs)
 	signal1.generate()
-	
 	m = 2
 	k = 9
 	input = scipy.io.loadmat('../pa_data/input.mat')

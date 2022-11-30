@@ -18,11 +18,11 @@ def main():
 	input = input['input']
 	output = output['output']
 	signal = input[0]
-	t = np.linspace(0,20,10500)
 	errMap = np.zeros((10,10))
 	m=2
 	k=9
 	G = 0.01708039
+	
 	pa1 = power_amplifier_mp([], m,k)
 	scale_factor = max(abs(signal))/(max(abs(output).flatten()))
 	scaled_output = output.flatten()*scale_factor
@@ -47,11 +47,12 @@ def main():
 	plt.draw() 
 	plt.show()
 	
-	e = 0.0000000000000000000000001
+	e = 0.00000000000001
 	a = np.arctan(np.divide(signal.imag,signal.real + e))
-	b = np.arctan(np.divide(amp_signal_without_dpd.imag,amp_signal_without_dpd.real+e))
-	c = np.arctan(np.divide(amp_signal_with_dpd.imag,amp_signal_with_dpd.real+e))
-	plt.plot(abs(signal), np.transpose(a - np.transpose(b)),'.', markersize=1)
+	b = np.arctan(np.divide(amp_signal_without_dpd.flatten().imag,amp_signal_without_dpd.flatten().real+e))
+	c = np.arctan(np.divide(amp_signal_with_dpd.flatten().imag,amp_signal_with_dpd.flatten().real+e))
+	s = np.transpose(a-np.transpose(b))
+	plt.plot(abs(signal), (PI/2)*np.ones(s.shape)- s,'.', markersize=1)
 	plt.plot(abs(signal), np.transpose(a - np.transpose(c)),'.', markersize=1)
 	plt.title('AM_PM with and without dpd')
 	plt.xlabel('Amplitude')
@@ -70,14 +71,5 @@ def main():
 	plt.ylabel('Amplitude [dB]')
 	plt.draw() 
 	plt.show()
-	
-
-	
-	'''
-	
-	
-	
-	
-	'''
 	
 main()

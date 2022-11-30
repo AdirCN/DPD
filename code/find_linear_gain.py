@@ -24,11 +24,8 @@ def main():
 	pa1 = power_amplifier_mp([], m,k)
 	X = pa1.calculateX(input[0])
 	ThetaLS = (np.matmul(inv(np.matmul((np.transpose(X)).conjugate(),X)),(np.transpose(X)).conjugate())).dot(np.transpose(output))
-	Y_hat = X.dot(ThetaLS)
 	pa2 = power_amplifier_mp(ThetaLS,m,k)
-	amp_signal = pa2.amplify(signal)
-	err = (np.linalg.norm(abs(np.transpose(output)) - abs(amp_signal)))/np.linalg.norm(abs(output))
-	
+	amp_signal = pa2.amplify(signal)	
 	x = []
 	y = []
 	
