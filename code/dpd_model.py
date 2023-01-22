@@ -23,7 +23,7 @@ def main():
 	G = 0.01708039
 	
 	pa1 = power_amplifier_mp([], m,k)
-	scale_factor = max(abs(signal))/(max(abs(output).flatten()))
+	scale_factor = max(signal.flatten(),key=abs)/(max(output.flatten(),key=abs))
 	scaled_output = output.flatten()*scale_factor
 	Y = pa1.calculateX(scaled_output)
 	ThetaPDLS = (np.matmul(inv(np.matmul((np.transpose(Y)).conjugate(),Y)),(np.transpose(Y)).conjugate())).dot(np.transpose(signal))
@@ -39,6 +39,14 @@ def main():
 	amp_signal_without_dpd = pa2.amplify(signal)
 	
 	plt.plot(abs(signal),abs(amp_signal_without_dpd.flatten()),'.', markersize=1)
+	plt.plot(abs(signal),abs(output.flatten()),'.', markersize=1)
+	plt.title('Modeled and measured AM_AM')
+	plt.xlabel('Amplitude')
+	plt.ylabel('Amplitude')
+	plt.draw() 
+	plt.show()
+	
+	plt.plot(abs(signal),abs(amp_signal_without_dpd.flatten()),'.', markersize=1)
 	plt.plot(abs(signal),abs(amp_signal_with_dpd.flatten()),'.', markersize=1)
 	plt.title('AM_AM with and without dpd')
 	plt.xlabel('Amplitude')
@@ -49,15 +57,39 @@ def main():
 	e = 0.00000000000001
 	a = np.arctan(np.divide(signal.imag,signal.real + e))
 	b = np.arctan(np.divide(amp_signal_without_dpd.flatten().imag,amp_signal_without_dpd.flatten().real+e))
+	c = np.arctan(np.divide(output.flatten().imag,output.flatten().real+e))
+	plt.plot(abs(signal),np.transpose(a-np.transpose(b)),'.', markersize=1)
+	plt.plot(abs(signal), np.transpose(a - np.transpose(c)),'.', markersize=1)
+	plt.title('Modeled and measured AM_PM')
+	plt.xlabel('Amplitude')
+	plt.ylabel('phase difference')
+	plt.draw() 
+	plt.show()
+	
+	e = 0.00000000000001
+	a = np.arctan(np.divide(signal.imag,signal.real + e))
+	b = np.arctan(np.divide(amp_signal_without_dpd.flatten().imag,amp_signal_without_dpd.flatten().real+e))
 	c = np.arctan(np.divide(amp_signal_with_dpd.flatten().imag,amp_signal_with_dpd.flatten().real+e))
-	s = np.transpose(a-np.transpose(b))
-	plt.plot(abs(signal), (PI/2)*np.ones(s.shape)- s,'.', markersize=1)
+	plt.plot(abs(signal),np.transpose(a-np.transpose(b)),'.', markersize=1)
 	plt.plot(abs(signal), np.transpose(a - np.transpose(c)),'.', markersize=1)
 	plt.title('AM_PM with and without dpd')
 	plt.xlabel('Amplitude')
 	plt.ylabel('phase difference')
 	plt.draw() 
 	plt.show()
+	
+	rate = 3*(10**6)
+	f = np.linspace(-rate/2,rate/2,len(amp_signal_without_dpd.flatten()))
+	amp_spectrum_without_dpd = fftshift(fft(amp_signal_without_dpd.flatten()))
+	amp_spectrum_output = fftshift(fft(output.flatten()))
+	
+	plt.plot(f,10*np.log(np.abs(amp_spectrum_without_dpd)),f,10*np.log(np.abs(amp_spectrum_output)))
+	plt.title('Modeled and measured output spectrum')
+	plt.xlabel('f [Hz]')
+	plt.ylabel('Amplitude [dB]')
+	plt.draw() 
+	plt.show()
+	
 	
 	rate = 3*(10**6)
 	f = np.linspace(-rate/2,rate/2,len(amp_signal_without_dpd.flatten()))
