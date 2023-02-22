@@ -13,7 +13,7 @@ with open('nn_output.npy', 'rb') as f:
 m = 2
 k = 9
 inputLayerDim = (2+k)*m
-n_input, n_hidden, n_out, learning_rate = inputLayerDim, 4, 2, 0.00000001
+n_input, n_hidden, n_out, learning_rate = inputLayerDim, 4, 2, 0.001
 model = nn.Sequential(nn.Linear(n_input, n_hidden),
 					  nn.ReLU(),
 					  nn.Linear(n_hidden, n_out))
