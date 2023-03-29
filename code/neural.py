@@ -6,10 +6,10 @@ import torch
 import torch.nn as nn
 
 with open('nn_input.npy', 'rb') as f:
-	nn_input = torch.from_numpy(np.load(f)/10000000000)
+	nn_input = torch.from_numpy(np.load(f))
 with open('nn_output.npy', 'rb') as f:
 	real_output = np.load(f)
-	nn_output = torch.from_numpy(real_output/10000000000)
+	nn_output = torch.from_numpy(real_output)
 
 m = 2
 k = 9
@@ -27,7 +27,7 @@ loss_function = nn.MSELoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 losses = []
-for epoch in range(500):
+for epoch in range(100):
 	pred_y = model(nn_input.float())
 	loss = loss_function(pred_y, nn_output.float())
 	losses.append(loss.item())
