@@ -17,13 +17,14 @@ def main():
 	input = input['input']
 	output = output['output']
 	signal = input[0]
-	errMap = np.zeros((10,10))
+
 	m=2
 	k=9
 	G = 0.01708039
 	
 	pa1 = power_amplifier_mp([], m,k)
 	scale_factor = max(signal.flatten(),key=abs)/(max(output.flatten(),key=abs))
+	print(scale_factor)
 	scaled_output = output.flatten()*scale_factor
 	Y = pa1.calculateX(scaled_output)
 	ThetaPDLS = (np.matmul(inv(np.matmul((np.transpose(Y)).conjugate(),Y)),(np.transpose(Y)).conjugate())).dot(np.transpose(signal))
