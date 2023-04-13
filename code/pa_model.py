@@ -50,6 +50,7 @@ def main():
 	plt.ylabel('Amplitude')
 	plt.draw() 
 	plt.show()
+	
 	e = 0.0000000000000000000000001
 	a = np.arctan(np.divide(signal.imag,signal.real + e))
 	b = np.arctan(np.divide(amp_signal.imag,amp_signal.real+e))
@@ -63,7 +64,7 @@ def main():
 	rate = 3*(10**6)
 	f = np.linspace(-rate/2,rate/2,len(amp_signal))
 	amp_spectrum = fftshift(fft(amp_signal.flatten()))
-	plt.plot(f,10*np.log(np.abs(amp_spectrum)))
+	plt.plot(f,10*np.log10(np.abs(amp_spectrum)))
 	plt.title('Modeled PA output Spectrum')
 	plt.xlabel('f [Hz]')
 	plt.ylabel('Amplitude [dB]')
@@ -71,7 +72,7 @@ def main():
 	plt.show()
 		
 	amp_spectrum = fftshift(fft(signal))
-	plt.plot(f,10*np.log(np.abs(amp_spectrum)))
+	plt.plot(f,10*np.log10(np.abs(amp_spectrum)))
 	plt.title('PA input Spectrum')
 	plt.xlabel('f [Hz]')
 	plt.ylabel('Amplitude [dB]')

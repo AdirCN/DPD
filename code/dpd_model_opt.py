@@ -36,14 +36,14 @@ def main():
 				min_m = m
 				min_k = k
 				min_err = err
-			errMap[m-1][k-1] = 20*math.log(err)
+			errMap[m-1][k-1] = 20*math.log10(err)
 	print("minimum_total:")
-	print("m: " + str(min_m) + ", k: " + str(min_k)+ ", err: " + str(20*math.log(min_err)))
+	print("m: " + str(min_m) + ", k: " + str(min_k)+ ", err: " + str(20*math.log10(min_err)))
 	fig1, (ax1)= plt.subplots(1, sharex = True, sharey = False)
 	ax1.imshow(errMap, interpolation ='none', aspect = 'auto')
 	for (j,i),label in np.ndenumerate(errMap):
 		label = "{:.2f}".format(label)
-		ax1.text(i,j,label,ha='center',va='center')
+		ax1.text(i,j,label,ha='center',va='center',color ="white")
 	plt.xlabel('k-1')
 	plt.ylabel('m-1')
 	plt.title("Error in db")

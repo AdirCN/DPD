@@ -24,7 +24,6 @@ def main():
 	
 	pa1 = power_amplifier_mp([], m,k)
 	scale_factor = max(signal.flatten(),key=abs)/(max(output.flatten(),key=abs))
-	print(scale_factor)
 	scaled_output = output.flatten()*scale_factor
 	Y = pa1.calculateX(scaled_output)
 	ThetaPDLS = (np.matmul(inv(np.matmul((np.transpose(Y)).conjugate(),Y)),(np.transpose(Y)).conjugate())).dot(np.transpose(signal))
@@ -84,7 +83,7 @@ def main():
 	amp_spectrum_without_dpd = fftshift(fft(amp_signal_without_dpd.flatten()))
 	amp_spectrum_output = fftshift(fft(output.flatten()))
 	
-	plt.plot(f,10*np.log(np.abs(amp_spectrum_without_dpd)),f,10*np.log(np.abs(amp_spectrum_output)))
+	plt.plot(f,10*np.log10(np.abs(amp_spectrum_without_dpd)),f,10*np.log10(np.abs(amp_spectrum_output)))
 	plt.title('Modeled and measured output spectrum')
 	plt.xlabel('f [Hz]')
 	plt.ylabel('Amplitude [dB]')
@@ -97,7 +96,7 @@ def main():
 	amp_spectrum_without_dpd = fftshift(fft(amp_signal_without_dpd.flatten()))
 	amp_spectrum_with_dpd = fftshift(fft(amp_signal_with_dpd.flatten()))
 	
-	plt.plot(f,10*np.log(np.abs(amp_spectrum_without_dpd)),f,10*np.log(np.abs(amp_spectrum_with_dpd)))
+	plt.plot(f,10*np.log10(np.abs(amp_spectrum_without_dpd)),f,10*np.log10(np.abs(amp_spectrum_with_dpd)))
 	plt.title('Output spectrum with and without dpd')
 	plt.xlabel('f [Hz]')
 	plt.ylabel('Amplitude [dB]')

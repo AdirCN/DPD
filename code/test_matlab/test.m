@@ -1,6 +1,8 @@
 realInput = (cell2mat(struct2cell(load('C:/Users/magshimim/Desktop/DPD/DPD/pa_data/input.mat'))));
 output = transpose(cell2mat(struct2cell(load('output.mat'))));
 input = transpose(create_matrix(realInput));
+load('(22-40-2DPD).mat');
+load('(22-40-2PA).mat');
 
 without_dpd = netPA(input);
 without_dpd = without_dpd(1,:) + 1j*without_dpd(2,:);
@@ -15,6 +17,9 @@ figure(1);
 plot(abs(realInput), abs(without_dpd), ".");
 hold on;
 plot(abs(realInput), abs(with_dpd), ".");
+title("AM-AM with and without dpd");
+xlabel("Amplitude");
+ylabel("Amplitude");
 
 figure(2);
 Fs = 3*(10^6);
@@ -24,13 +29,55 @@ plot(f,db(abs(withoutDPD)));
 hold on;
 withDPD = fftshift(fft(with_dpd));
 plot(f,db(abs(withDPD)));
-%hold on;
+title("Output spectrum with and without dpd");
+xlabel("f [Hz]");
+ylabel("Amplitude [dB]");
 
-%O = fftshift(fft(o));
-%plot(f,abs(O));
 
-%plot(abs(h));
-%hold on;
-%figure;
-%plot(abs(o));
-%save netPA;
+figure(3);
+epsilon = 0.0000000000000000000000001;
+a = atan(imag(realInput)./(real(realInput)+epsilon));
+b = atan(imag(without_dpd)./(real(without_dpd)+epsilon));
+c = atan(imag(with_dpd)./(real(with_dpd)+epsilon));
+plot(abs(realInput),a-b,".");
+hold on;
+plot(abs(realInput),a-c,".");
+title("AM-PM with and without dpd");
+xlabel("Amplitude");
+ylabel("phase difference");
+
+output = output(1,:) + 1j*output(2,:);
+
+figure(4);
+plot(abs(realInput), abs(without_dpd), ".");
+hold on;
+plot(abs(realInput), abs(output), ".");
+title("NN's output and measured AM-AM");
+xlabel("Amplitude");
+ylabel("Amplitude");
+
+figure(5);
+epsilon = 0.0000000000000000000000001;
+a = atan(imag(realInput)./(real(realInput)+epsilon));
+b = atan(imag(without_dpd)./(real(without_dpd)+epsilon));
+c = atan(imag(output)./(real(output)+epsilon));
+plot(abs(realInput),a-b,".");
+hold on;
+plot(abs(realInput),a-c,".");
+title("NN's output and measured AM-PM");
+xlabel("Amplitude");
+ylabel("phase difference");
+
+figure(6);
+Fs = 3*(10^6);
+f= linspace(-(Fs/2), (Fs/2), length(with_dpd));
+withoutDPD = fftshift(fft(without_dpd));
+plot(f,db(abs(withoutDPD)));
+hold on;
+withDPD = fftshift(fft(output));
+plot(f,db(abs(withDPD)));
+title("NN's output and measured output spectrum");
+xlabel("f [Hz]");
+ylabel("Amplitude [dB]");
+
+
