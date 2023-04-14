@@ -1,7 +1,7 @@
 realInput = (cell2mat(struct2cell(load('C:/Users/magshimim/Desktop/DPD/DPD/pa_data/input.mat'))));
 output = transpose(cell2mat(struct2cell(load('output.mat'))));
 input = transpose(create_matrix(realInput));
-load('(22-40-2DPD).mat');
+load('(22 25 35 30 20 10 2DPD).mat')
 load('(22-40-2PA).mat');
 
 without_dpd = netPA(input);

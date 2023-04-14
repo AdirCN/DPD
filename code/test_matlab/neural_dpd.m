@@ -7,7 +7,7 @@ scaled_output = o*scale_factor;
 DPDinput = transpose(create_matrix(scaled_output));
 DPDouput = transpose([transpose(real(realInput)), transpose(imag(realInput))]);
 
-netDPD = feedforwardnet([22 40 2],'trainbr');
+netDPD = feedforwardnet([22 25 35 30 20 10 2],'trainlm');
 netDPD=train(netDPD,DPDinput,DPDouput);
 
 
