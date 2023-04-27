@@ -9,6 +9,7 @@ from scipy.fftpack import fft, ifft,fftshift
 import cmath
 import scipy.io
 from numpy.linalg import inv
+from sklearn.linear_model import LinearRegression
 PI = 3.14159265359
 
 def main():
@@ -54,6 +55,18 @@ def main():
 	plt.draw() 
 	plt.show()
 	
+	x = np.asarray(abs(signal))
+	y = np.asarray(abs(amp_signal_with_dpd.flatten()))
+	x = x.reshape((-1, 1))
+	# Create an instance of a linear regression model and fit it to the data with the fit() function:
+	model = LinearRegression().fit(x, y) 
+	# The following section will get results by interpreting the created instance: 
+	# Obtain the coefficient of determination by calling the model with the score() function, then print the coefficient:
+	r_sq = model.score(x, y)
+	slope = model.coef_
+	desired = np.transpose(slope*abs(input))
+	err = 10*math.log10((np.linalg.norm(abs(desired)-abs(amp_signal_with_dpd))/np.linalg.norm(desired)))
+	
 	e = 0.00000000000001
 	a = np.arctan(np.divide(signal.imag,signal.real + e))
 	b = np.arctan(np.divide(amp_signal_without_dpd.flatten().imag,amp_signal_without_dpd.flatten().real+e))
@@ -65,6 +78,8 @@ def main():
 	plt.ylabel('phase difference')
 	plt.draw() 
 	plt.show()
+	
+	
 	
 	e = 0.00000000000001
 	a = np.arctan(np.divide(signal.imag,signal.real + e))
@@ -102,5 +117,9 @@ def main():
 	plt.ylabel('Amplitude [dB]')
 	plt.draw() 
 	plt.show()
+	
+	oobwidpd = (np.linalg.norm(np.square(abs(amp_spectrum_with_dpd[1100:4500])))+np.linalg.norm(np.square(abs(amp_spectrum_with_dpd[6000:9400]))))/np.linalg.norm(np.square(abs(amp_spectrum_with_dpd[4500:6000])));
+	oobwodpd = (np.linalg.norm(np.square(abs(amp_spectrum_without_dpd[1100:4500])))+np.linalg.norm(np.square(abs(amp_spectrum_without_dpd[6000:9400]))))/np.linalg.norm(np.square(abs(amp_spectrum_without_dpd[4500:6000])));
+	OOB = 10*math.log10(oobwidpd/oobwodpd);
 	
 main()
