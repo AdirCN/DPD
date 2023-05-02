@@ -37,6 +37,12 @@ def main():
 	plt.draw() 
 	plt.show()
 	
+	p = np.square(abs(input))
+	print(np.max(p))
+	print(np.average(p))
+	papr = 10*math.log10((np.max(p)/np.average(p)))
+	print(papr)
+	
 	plt.plot(t,abs(output.flatten()))
 	plt.title('Amplified')
 	plt.xlabel('t [sec]')
