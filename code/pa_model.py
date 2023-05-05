@@ -30,7 +30,7 @@ def main():
 	err = 20*math.log10((np.linalg.norm(abs(np.transpose(output)) - abs(amp_signal)))/np.linalg.norm(abs(np.transpose(output))))
 	print(err)
 	
-	plt.plot(t,np.transpose(abs(input)))
+	plt.plot(t[0:505],np.transpose(abs(input))[0:505])
 	plt.title('input signal')
 	plt.xlabel('t [sec]')
 	plt.ylabel('Amplitude')
